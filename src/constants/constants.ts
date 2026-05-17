@@ -268,9 +268,25 @@ export const pidOptions: SelectOption<number>[] = [
   { label: "30天", value: 2 },
   { label: "60天", value: 3 }
 ];
-export const pledgeTypeOptions: SelectOption<number>[] = [
+export const pledgeTypeTwoOptions: SelectOption<number>[] = [
   { label: "查个人", value: 1 },
   { label: "查伞下", value: 2 }
+];
+
+export const pledgeLeadOptions: SelectOption<boolean>[] = [
+  { label: "是", value: true },
+  { label: "否", value: false }
+];
+export const pledgeWorkShopOptions: SelectOption<boolean>[] = [
+  { label: "是", value: true },
+  { label: "否", value: false }
+];
+
+export const pledgeTypeOptions: SelectOption<number>[] = [
+  { label: "查个人", value: 1 },
+  { label: "查伞下", value: 2 },
+  { label: "查0号线", value: 3 },
+  { label: "查工作室", value: 4 }
 ];
 export const isRepetitionOptions: SelectOption<number>[] = [
   { label: "全部", value: "null" },

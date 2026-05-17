@@ -68,7 +68,7 @@ const pageData: any = reactive({
       },
       { label: "团队人数", prop: "teamCount", minWidth: "120px" },
       { label: "直推人数", prop: "directCount", minWidth: "120px" },
-      { label: "伞下购买nft数量", prop: "subNftCount", minWidth: "120px" },
+      { label: "伞下购买nft数量", prop: "subNftCount", minWidth: "160px" },
       { label: "创建时间", prop: "createTime", width: "180px" },
     ],
     list: [],

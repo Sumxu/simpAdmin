@@ -220,66 +220,123 @@ defineOptions({ name: "FormSearch" });
 </script>
 
 <template>
-  <el-form :inline="true" label-width="auto" :label-position="props.position" :size="props.size" v-if="props.show">
-    <el-form-item :label="item.label" v-for="(item, index) in props.formField" :key="index">
+  <el-form
+    :inline="true"
+    label-width="auto"
+    :label-position="props.position"
+    :size="props.size"
+    v-if="props.show"
+  >
+    <el-form-item
+      :label="item.label"
+      v-for="(item, index) in props.formField"
+      :key="index"
+    >
       <!--input-->
       <template v-if="item.type === 'input'">
-        <el-input v-model="pageData.formData[item.prop]" :placeholder="item.placeholder" :maxlength="item.max"
-          :min="item.min" :clearable="item.options?.clearable || true" @change="_change(item)"
-          :style="{ width: item.width ? item.width + 'px' : '200px' }" />
+        <el-input
+          v-model="pageData.formData[item.prop]"
+          :placeholder="item.placeholder"
+          :maxlength="item.max"
+          :min="item.min"
+          :clearable="item.options?.clearable || true"
+          @change="_change(item)"
+          :style="{ width: item.width ? item.width + 'px' : '200px' }"
+        />
       </template>
       <!--number-->
       <template v-if="item.type === 'number'">
-        <el-input-number v-model="pageData.formData[item.prop]" controls-position="right"
-          :placeholder="item.placeholder" @change="_change(item)"
-          :style="{ width: item.width ? item.width + 'px' : '200px' }" />
+        <el-input-number
+          v-model="pageData.formData[item.prop]"
+          controls-position="right"
+          :placeholder="item.placeholder"
+          @change="_change(item)"
+          :style="{ width: item.width ? item.width + 'px' : '200px' }"
+        />
       </template>
       <!--select-->
       <template v-else-if="item.type === 'select'">
-        <el-select v-model="pageData.formData[item.prop]" :filterable="item.options ? item.options?.filterable : false"
-          :clearable="item.options?.clearable || true" :placeholder="item.placeholder" style="width: 100%"
-          @change="_change(item)">
-          <el-option v-for="sub in props.dataSource[item.dataSourceKey]" :key="sub[
-            item.options?.keys?.prop === undefined
-              ? 'value'
-              : item.options.keys.prop
-          ]
-            " :value="sub[
-              item.options?.keys?.value === undefined
-                ? 'value'
-                : item.options.keys.value
-            ]
-              " :label="sub[
-      item.options?.keys?.label === undefined
-        ? 'value'
-        : item.options.keys.label
-    ]
-      " />
+        <el-select
+          v-model="pageData.formData[item.prop]"
+          :filterable="item.options ? item.options?.filterable : false"
+          :clearable="item.options?.clearable || true"
+          :placeholder="item.placeholder"
+          style="width: 100%"
+          @change="_change(item)"
+        >
+          <el-option
+            v-for="sub in props.dataSource[item.dataSourceKey]"
+            :key="
+              sub[
+                item.options?.keys?.prop === undefined
+                  ? 'value'
+                  : item.options.keys.prop
+              ]
+            "
+            :value="
+              sub[
+                item.options?.keys?.value === undefined
+                  ? 'value'
+                  : item.options.keys.value
+              ]
+            "
+            :label="
+              sub[
+                item.options?.keys?.label === undefined
+                  ? 'value'
+                  : item.options.keys.label
+              ]
+            "
+          />
         </el-select>
-
       </template>
       <!--date-->
       <template v-else-if="item.type === 'date'">
-        <el-date-picker v-model="pageData.formData[item.prop]" :placeholder="item.placeholder"
-          :clearable="item.options?.clearable || true" :type="item.dateType ? item.dateType : 'date'"
-          :format="item.dateFormat ? item.dateFormat : 'YYYY-MM-DD'" :value-format="item.dateValueFormat ? item.dateValueFormat : 'YYYY-MM-DD'
-            " @change="_change(item)" />
+        <el-date-picker
+          v-model="pageData.formData[item.prop]"
+          :placeholder="item.placeholder"
+          :clearable="item.options?.clearable || true"
+          :type="item.dateType ? item.dateType : 'datetime'"
+          :format="item.dateFormat ? item.dateFormat : 'YYYY-MM-DD'"
+          :value-format="
+            item.dateValueFormat ? item.dateValueFormat : 'YYYY-MM-DD'
+          "
+          @change="_change(item)"
+        />
       </template>
 
       <!-- radio -->
       <template v-else-if="item.type === 'radio'">
-        <el-radio-group v-model="pageData.formData[item.prop]" @change="_change(item)">
-          <el-radio v-for="sub in props.dataSource[item.dataSourceKey]" :key="sub[item.options?.keys?.prop ?? 'value']"
-            :label="sub[item.options?.keys?.value ?? 'value']">
-            {{ sub[item.options?.keys?.label ?? 'value'] }}
+        <el-radio-group
+          v-model="pageData.formData[item.prop]"
+          @change="_change(item)"
+        >
+          <el-radio
+            v-for="sub in props.dataSource[item.dataSourceKey]"
+            :key="sub[item.options?.keys?.prop ?? 'value']"
+            :label="sub[item.options?.keys?.value ?? 'value']"
+          >
+            {{ sub[item.options?.keys?.label ?? "value"] }}
           </el-radio>
         </el-radio-group>
       </template>
     </el-form-item>
     <el-form-item>
-      <el-button plain type="primary" :icon="useRenderIcon('ep:search')" v-auth="props.queryPermission"
-        @click="_search">查询</el-button>
-      <el-button plain type="" :icon="useRenderIcon('ep:refresh')" @click="_searchReset">重置</el-button>
+      <el-button
+        plain
+        type="primary"
+        :icon="useRenderIcon('ep:search')"
+        v-auth="props.queryPermission"
+        @click="_search"
+        >查询</el-button
+      >
+      <el-button
+        plain
+        type=""
+        :icon="useRenderIcon('ep:refresh')"
+        @click="_searchReset"
+        >重置</el-button
+      >
     </el-form-item>
   </el-form>
 </template>

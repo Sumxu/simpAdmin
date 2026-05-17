@@ -37,3 +37,12 @@ export function exportXlsx<T>(data?: any): Promise<Result<T>> {
 export function queryTotal<T>(data?: any): Promise<Result<T>> {
   return get("/deposit/total", data);
 }
+export function updateWorkshop<T>(data?: any): Promise<Result<T>> {
+  return get("/address/updateWorkshop", data);
+}
+export function updateRemark<T>(data?: any): Promise<Result<T>> {
+  return get("/address/updateRemark", data);
+}
+export function updateLead<T>(data?: any): Promise<Result<T>> {
+  return get("/address/updateLead", data);
+}

@@ -19,12 +19,6 @@ const pageData: any = reactive({
       width: "370"
     },
     {
-      type: "date",
-      label: "时间筛选",
-      prop: "dates",
-      dateType: "daterange"
-    },
-    {
       type: "radio",
       label: "类型",
       prop: "queryType",
@@ -38,6 +32,14 @@ const pageData: any = reactive({
           label: "label"
         }
       }
+    },
+    {
+      type: "date",
+      label: "时间筛选",
+      prop: "dateTimes",
+      dateType: "datetimerange",
+      dateFormat: "YYYY-MM-DD HH:mm:ss",
+      dateValueFormat: "YYYY-MM-DD HH:mm:ss"
     }
   ],
   dataSource: {
@@ -55,6 +57,7 @@ const pageData: any = reactive({
     ]
   },
   tableParams: {
+    totalUsdt: 0,
     columns: [
       {
         label: "钱包地址",
@@ -100,6 +103,7 @@ const _updateSearchFormData = (data: any) => (pageData.searchForm = data);
 // 查询
 const _searchForm = (data: any) => {
   pageData.searchForm = data;
+  console.log(data);
   _loadData();
 };
 
@@ -132,6 +136,14 @@ const _loadData = (page?: number) => {
       }
     })
     .finally(() => (pageData.tableParams.loading = false));
+
+  $Api.queryTotal(query).then(res => {
+    if (res.code === 200) {
+      pageData.tableParams.totalUsdt = res.data;
+    } else {
+      message.warning(res.msg);
+    }
+  });
 };
 
 // 分页切换
@@ -176,6 +188,9 @@ onMounted(() => _loadData());
       :right-btns="pageData.btnOpts.rightBtns"
       @click="btnClickHandle"
     />
+    <h3 style="margin-bottom: 12px;">
+      USDT统计:{{ fromWei(pageData.tableParams.totalUsdt) }}
+    </h3>
     <pure-table
       :data="pageData.tableParams.list"
       :columns="pageData.tableParams.columns"

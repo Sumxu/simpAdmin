@@ -45,7 +45,7 @@ const pageData: any = reactive({
     {
       type: "select",
       label: "代币类型",
-      prop: "type",
+      prop: "coinType",
       placeholder: "请选择",
       dataSourceKey: "rewardCoinType",
       options: {
@@ -121,7 +121,7 @@ const pageData: any = reactive({
 // 搜索表单变化
 const _updateSearchFormData = (data: any) => (pageData.searchForm = data);
 const handleTabClick = val => {
-  console.log("val===",val)
+  console.log("val===", val);
   pageData.type = val;
   _loadData();
 };
@@ -139,7 +139,7 @@ const getQueryParams = () => ({
   ...pageData.searchForm,
   current: pageData.tableParams.pagination.currentPage,
   size: pageData.tableParams.pagination.pageSize,
-  type:pageData.type
+  type: pageData.type
 });
 
 // 获取表格数据

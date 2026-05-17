@@ -35,5 +35,5 @@ export function exportXlsx<T>(data?: any): Promise<Result<T>> {
  * @returns .
  */
 export function queryTotal<T>(data?: any): Promise<Result<T>> {
-  return get("/deposit/total", data);
+  return post("/deposit/total", data);
 }
