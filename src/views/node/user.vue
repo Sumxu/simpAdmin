@@ -5,7 +5,9 @@ import TableButtons from "@/components/opts/btns2.vue";
 import { PureTable } from "@pureadmin/table";
 import * as $Api from "@/api/node/user";
 import message from "@/utils/message";
-import { pledgeTypeOptions } from "@/constants/constants";
+import { downloadExcel } from "@/utils/downloadExcel";
+import {ElMessage} from 'element-plus'
+import { pledgeTypeOptions, nodeTypeOptions } from "@/constants/constants";
 const pageData: any = reactive({
   searchState: true,
   searchForm: {},
@@ -15,14 +17,14 @@ const pageData: any = reactive({
       label: "钱包地址",
       prop: "address",
       placeholder: "请输入钱包地址",
-      width: "370",
+      width: "370"
     },
     {
       type: "input",
       label: "上级地址",
       prop: "inviterAddress",
       placeholder: "请输入上级地址",
-      width: "370",
+      width: "370"
     },
     {
       type: "radio",
@@ -35,41 +37,65 @@ const pageData: any = reactive({
         keys: {
           prop: "prop",
           value: "value",
-          label: "label",
-        },
-      },
+          label: "label"
+        }
+      }
     },
+    {
+      type: "select",
+      label: "是否是节点",
+      prop: "isNode",
+      placeholder: "请选择",
+      dataSourceKey: "nodeTypeOptions",
+      options: {
+        filterable: true,
+        keys: {
+          prop: "value",
+          value: "value",
+          label: "label"
+        }
+      }
+    }
   ],
   dataSource: {
     pledgeTypeOptions: pledgeTypeOptions,
+    nodeTypeOptions: nodeTypeOptions
   },
   permission: {
-    query: [""],
+    query: [""]
   },
   btnOpts: {
     size: "small",
-    leftBtns: [],
+    leftBtns: [
+      {
+        key: "promotion",
+        label: "导出报表",
+        icon: "ep:promotion",
+        state: true,
+        loading: false
+      }
+    ],
     rightBtns: [
       { key: "search", label: "查询", icon: "ep:search", state: true },
-      { key: "refresh", label: "刷新", icon: "ep:refresh", state: true },
-    ],
+      { key: "refresh", label: "刷新", icon: "ep:refresh", state: true }
+    ]
   },
   tableParams: {
     columns: [
       {
         label: "钱包地址",
         prop: "address",
-        width: "370px",
+        width: "370px"
       },
       {
         label: "邀请地址",
         prop: "inviterAddress",
-        width: "370px",
+        width: "370px"
       },
       { label: "团队人数", prop: "teamCount", minWidth: "120px" },
       { label: "直推人数", prop: "directCount", minWidth: "120px" },
       { label: "伞下购买nft数量", prop: "subNftCount", minWidth: "160px" },
-      { label: "创建时间", prop: "createTime", width: "180px" },
+      { label: "创建时间", prop: "createTime", width: "180px" }
     ],
     list: [],
     loading: false,
@@ -79,14 +105,28 @@ const pageData: any = reactive({
       currentPage: 1,
       total: 0,
       background: true,
-      pageSizes: [50, 100, 200, 300, 500],
-    },
-  },
+      pageSizes: [50, 100, 200, 300, 500]
+    }
+  }
 });
 
 // 搜索表单变化
 const _updateSearchFormData = (data: any) => (pageData.searchForm = data);
+const deriveXlsx = async () => {
+  const query = getQueryParams();
+  pageData.btnOpts.leftBtns[0].loading = true;
 
+  const result = await downloadExcel(
+    () => $Api.exportXlsx(query),
+    "用户列表.xlsx"
+  );
+  if (result.success) {
+    ElMessage.success("导出成功");
+    pageData.btnOpts.leftBtns[0].loading = false;
+  } else {
+    pageData.btnOpts.leftBtns[0].loading = false;
+  }
+};
 // 查询
 const _searchForm = (data: any) => {
   pageData.searchForm = data;
@@ -100,7 +140,7 @@ const _resetSearchForm = (data?) => (pageData.searchForm = data);
 const getQueryParams = () => ({
   ...pageData.searchForm,
   current: pageData.tableParams.pagination.currentPage,
-  size: pageData.tableParams.pagination.pageSize,
+  size: pageData.tableParams.pagination.pageSize
 });
 
 // 获取表格数据
@@ -143,6 +183,9 @@ const btnClickHandle = (key: string) => {
       break;
     case "refresh":
       _loadData();
+      break;
+    case "promotion":
+      deriveXlsx();
       break;
   }
 };

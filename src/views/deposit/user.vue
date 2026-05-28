@@ -6,6 +6,7 @@ import { PureTable } from "@pureadmin/table";
 import * as $Api from "@/api/member/user";
 import message from "@/utils/message";
 import { fromWei } from "@/utils/wallet";
+import { downloadExcel } from "@/utils/downloadExcel";
 import {
   ElMessageBox,
   ElSelect,
@@ -96,7 +97,9 @@ const pageData: any = reactive({
   },
   btnOpts: {
     size: "small",
-    leftBtns: [],
+    leftBtns: [
+    
+    ],
     rightBtns: [
       { key: "search", label: "查询", icon: "ep:search", state: true },
       { key: "refresh", label: "刷新", icon: "ep:refresh", state: true }
@@ -289,6 +292,7 @@ const btnClickHandle = (key: string) => {
     case "refresh":
       _loadData();
       break;
+  
   }
 };
 const handleUpdateRemark = (row: any) => {
@@ -353,6 +357,7 @@ onMounted(() => _loadData());
       @search="_searchForm"
       @reset="_resetSearchForm"
     />
+    
     <table-buttons
       :size="pageData.btnOpts.size"
       :left-btns="pageData.btnOpts.leftBtns"

@@ -8,3 +8,14 @@ import { type Result, post } from "../base";
 export function queryPage<T>(data?: any): Promise<Result<T>> {
   return post("/node/user/page", data);
 }
+/**
+ * 导出
+ * @param query .
+ * @returns .
+ */
+export function exportXlsx<T>(data?: any): Promise<Result<T>> {
+  return post("/address/export", data, {
+    responseType: "blob",
+    timeout: 300000
+  });
+}

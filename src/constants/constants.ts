@@ -281,7 +281,10 @@ export const pledgeWorkShopOptions: SelectOption<boolean>[] = [
   { label: "是", value: true },
   { label: "否", value: false }
 ];
-
+export const nodeTypeOptions: SelectOption<number>[] = [
+  { label: "是", value: true },
+  { label: "不是", value: false }
+];
 export const pledgeTypeOptions: SelectOption<number>[] = [
   { label: "查个人", value: 1 },
   { label: "查伞下", value: 2 },
